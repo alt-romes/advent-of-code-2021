@@ -17,20 +17,23 @@ _main:
     xor  %rcx, %rcx        # Set counter to zero
     lea  input(%rip), %rbx # Set array pointer in rbx
     xor  %rax, %rax        # Clear %rax
+
 _runarray:
     movw (%rbx), %ax       # Move array item to %ax
     cmpw 2(%rbx), %ax      # Compare with next array item
     jg   _skip             # If current item is greater than following item: skip adding one
     inc  %rcx              # Increased +1
+
 _skip:
-    dec  %rdx
-    jz   _end
+    dec  %rdx              # Decrement array length left to process
+    jz   _end              # End if no items left to process
     add  $2, %rbx          # Next item
-    jmp  _runarray
+    jmp  _runarray         # Go to start of loop
+
 _end:
-    mov  %rcx, %rsi
-    lea  fmt(%rip), %rdi
-    call _printf
+    mov  %rcx, %rsi        # Set second argument (%rsi) for printf (see Calling Conventions https://cs61.seas.harvard.edu/site/2021/Asm/#Calling-convention)
+    lea  fmt(%rip), %rdi   # Set first argument (%rdi)
+    call _printf           # Call libc printf
 
     pop %rbp               # Pop base pointer
     ret
