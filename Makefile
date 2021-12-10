@@ -1,10 +1,10 @@
 all: 1.sol 2.sol
 
-%.sol: %.hs
-	ghc -O2 $< -o $@
-
 %.sol: %.s
 	gcc $< -o $@
+
+%.sol: %.hs
+	ghc -O2 $< -o $@
 
 .PHONY: clean
 clean:
